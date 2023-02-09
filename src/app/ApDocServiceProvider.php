@@ -16,39 +16,32 @@ class ApDocServiceProvider extends ServiceProvider
         Route::middlewareGroup('apdoc', config('apdoc.middleware', []));
 
         $this->registerRoutes();
+        $this->publisher();
         $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'apdoc');
 
     }
     
 
-    /**
-     * Register the API doc commands.
-     *
-     * @return void
-     */
+  
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/apdoc.php', 'apdoc');
         require __DIR__ . '/Helpers/helpers.php';
     }
 
-    /**
-     * Get the iDoc route group configuration array.
-     *
-     * @return array
-     */
+
+    protected function publisher(){
+        $this->publishes([
+            __DIR__.'/../config/apdoc.php' => config_path('apdoc.php'),
+        ]);
+    }
+
     protected function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../resources/routes/apdoc.php', 'apdoc');
         });
     }
-
-    /**
-     * Get the iDoc route group configuration array.
-     *
-     * @return array
-     */
     protected function routeConfiguration()
     {
         return [
