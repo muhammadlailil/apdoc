@@ -1,0 +1,34 @@
+{
+    "name": "laililmahfud/apdoc",
+    "license": "MIT",
+    "description": "Generate beautiful API documentation from your Laravel application",
+    "keywords": [
+        "API",
+        "Documentation",
+        "Laravel"
+    ],
+    "authors": [
+        {
+            "name": "laililmahfud",
+            "email": "laililmahvut@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0.2",
+        "mpociot/reflection-docblock": "^1.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Laililmahfud\\ApDoc\\": "src/app"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Laililmahfud\\ApDoc\\IDocServiceProvider"
+            ]
+       }
+    }
+}
