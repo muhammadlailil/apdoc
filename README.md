@@ -18,6 +18,14 @@
 $ composer require laililmahfud/apdoc
 ```
 
+### Laravel
+Publish the config file by running:
+
+```bash
+php artisan vendor:publish --tag=apdoc-config
+```
+This will create an `apdoc.php` file in your `config` folder.
+
 ## Configuration
 
 Before you can generate your documentation, you'll need to configure a few things in your `config/apdoc.php`.

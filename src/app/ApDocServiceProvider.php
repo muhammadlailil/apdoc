@@ -33,7 +33,7 @@ class ApDocServiceProvider extends ServiceProvider
     protected function publisher(){
         $this->publishes([
             __DIR__.'/../config/apdoc.php' => config_path('apdoc.php'),
-        ]);
+        ],'apdoc-config');
     }
 
     protected function registerRoutes()
