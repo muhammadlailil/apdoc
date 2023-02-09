@@ -20,7 +20,7 @@ $ composer require laililmahfud/apdoc
 
 ## Configuration
 
-Before you can generate your documentation, you'll need to configure a few things in your `config/idoc.php`.
+Before you can generate your documentation, you'll need to configure a few things in your `config/apdoc.php`.
 
 -   `path`
     This will be used to register the necessary routes for the package.
@@ -33,14 +33,14 @@ Before you can generate your documentation, you'll need to configure a few thing
     Here, you can specify the title to place on the documentation page.
 
 ```php
-'title' => 'iDoc API Reference',
+'title' => 'ApDoc API',
 ```
 
 -   `description`
     This will place a description on top of the documentation.
 
 ```php
-'description' => 'iDoc Api secification and documentation.',
+'description' => 'ApDoc Api secification and documentation.',
 ```
 
 -   `version`
