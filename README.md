@@ -15,7 +15,7 @@
 > Note: PHP 8 and Laravel 9.19 or higher are the minimum dependencies.
 
 ```sh
-$ composer require laililmahvut/apdoc
+$ composer require laililmahfud/apdoc
 ```
 
 ## Configuration
