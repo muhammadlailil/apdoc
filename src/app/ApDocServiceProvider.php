@@ -16,9 +16,6 @@ class ApDocServiceProvider extends ServiceProvider
         Route::middlewareGroup('apdoc', config('apdoc.middleware', []));
 
         $this->registerRoutes();
-        $this->registerPublishing();
-
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'apdoc');
         $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'apdoc');
 
     }
@@ -48,28 +45,6 @@ class ApDocServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the package's publishable resources.
-     *
-     * @return void
-     */
-    protected function registerPublishing()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../resources/lang' => $this->resourcePath('lang/apdoc'),
-            ], 'apdoc-language');
-
-            // $this->publishes([
-            //     __DIR__ . '/../resources/views' => $this->resourcePath('views/apdoc'),
-            // ], 'apdoc-views');
-
-            // $this->publishes([
-            //     __DIR__ . '/../config/apdoc.php' => app()->basePath() . '/config/apdoc.php',
-            // ], 'apdoc-config');
-        }
-    }
-
-    /**
      * Get the iDoc route group configuration array.
      *
      * @return array
@@ -82,17 +57,5 @@ class ApDocServiceProvider extends ServiceProvider
             'middleware' => 'apdoc',
             'as' => 'apdoc.',
         ];
-    }
-
-    /**
-     * Return a fully qualified path to a given file.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    public function resourcePath($path = '')
-    {
-        return app()->basePath() . '/resources' . ($path ? '/' . $path : $path);
     }
 }
