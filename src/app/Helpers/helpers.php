@@ -1,6 +1,5 @@
 <?php
 
-// for development only, remove this
 if (!function_exists('getdoc_file')) {
     function getdoc_file($file)
     {
