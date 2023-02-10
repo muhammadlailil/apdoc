@@ -10,6 +10,8 @@ return [
  
     'path' => 'api-documentation',
 
+    'enable_documentation' => env('APP_DEBUG'),
+
     'domain' => null,
 
     'middleware' => [
