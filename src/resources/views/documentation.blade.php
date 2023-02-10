@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ config('app.name') }} - API Docs</title>
+    <title>{{ config('app.name') }} - API Documentation</title>
 
     <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
@@ -30,9 +30,6 @@
         .HttpOperation__Description p{
             font-size: 15px
         }
-        .TryItPanel {
-            margin-bottom: 20px;
-        }
         .table-response-detail{
             display: flex;
         }
@@ -45,6 +42,10 @@
         .table-response-detail table tr th{
             padding: 10px 15px;
             font-size: 17px
+        }
+        div[data-testid="two-column-right"]{
+            width: 45% !important;
+            margin-left: 25px !important;
         }
     </style>
 </body>

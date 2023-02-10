@@ -378,14 +378,6 @@ public function getUser(int $id)
   // ...
 }
 ```
-
-## Credits
-
-This software uses the following open source packages:
-
--   [Laravel](https://laravel.com/)
--   [Laravl Idoc](https://github.com/ovac/idocc)
-
 ## You may also like...
 
 -   [Laravel Api Documentation Generator](mpociot/laravel-apidoc-generator) - A laravel api documentation generator.
