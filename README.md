@@ -15,7 +15,7 @@
 > Note: PHP 8 and Laravel 9.19 or higher are the minimum dependencies.
 
 ```sh
-$ composer require laililmahfud/apdoc
+composer require laililmahfud/apdoc
 ```
 
 ### Laravel
@@ -334,14 +334,6 @@ public function showUser(int $id)
 {
     // ...
 }
-```
-
-For the first route above, this package will generate a set of two users then pass it through the transformer. For the last two, it will generate a single user and then pass it through the transformer.
-
-> Note: for transformer support, you need to install the league/fractal package
-
-```bash
-composer require league/fractal
 ```
 
 #### @responseFile
