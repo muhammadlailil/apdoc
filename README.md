@@ -144,7 +144,7 @@ To specify a list of valid parameters your API route accepts, use the `@bodyPara
 -   The `@pathParam` annotation takes the name of the parameter, an optional "required" label, and then its description
 -   The `@defaultParam` annotation takes the default param
 -   The `@requestBody` annotation to make request body type, default is `application/json`
-
+-   The `@header` annotation to make header param =>  the name of the parameter, its type, an optional "required" label, and then its description.
 ```php
 
 /**
