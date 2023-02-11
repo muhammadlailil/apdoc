@@ -47,6 +47,9 @@
             width: 45% !important;
             margin-left: 25px !important;
         }
+        .sl-overflow-y-auto{
+            max-height: unset !important
+        }
     </style>
 </body>
 
