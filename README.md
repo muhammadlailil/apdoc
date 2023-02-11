@@ -372,7 +372,7 @@ public function getUser(int $id)
 ```
 ## You may also like...
 
--   [Laravel Api Documentation Generator](mpociot/laravel-apidoc-generator) - A laravel api documentation generator.
+-   [Laravel Api Documentation Generator](https://github.com/mpociot/laravel-apidoc-generator) - A laravel api documentation generator.
 
 ## License
 
