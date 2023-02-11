@@ -304,7 +304,7 @@ class ApDoc{
                             (
                                 count(array_intersect(['POST', 'PUT', 'PATCH'], $route['methods']))
                                 ? ['requestBody' => [
-                                    'description' => $route['description'],
+                                    'description' => "",
                                     'required' => true,
                                     'content' => collect($jsonParameters)->filter()->toArray(),
                                 ]]
