@@ -267,7 +267,7 @@ class ApDoc{
                     if(count($route['response'] ?? [])){
                         foreach($route['response'] as $resp){
                             $response[$resp['status']] = [
-                                'description' => $resp['status'],
+                                'description' => (string) $resp['status'],
                                 'content' => [
                                     'application/json' => [
                                         'schema' => [
