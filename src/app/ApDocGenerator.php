@@ -73,7 +73,7 @@ class ApDocGenerator
             'bodyParameters' => $bodyParameters,
             'queryParameters' => $queryParameters,
             'pathParameters' => $pathParameters,
-            'authenticated' => $authenticated = $this->getAuthStatusFromDocBlock($docBlock['tags']),
+            'authenticated' => $this->getAuthStatusFromDocBlock($docBlock['tags']),
             'response' => $content,
             'sorting' => intval($routeSorting),
             'showresponse' => !empty($content),

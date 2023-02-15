@@ -108,7 +108,7 @@ class ApDoc{
 
             return collect($phpdoc->getTags())
                 ->filter(function ($tag) use ($route) {
-                    return $tag->getName() === 'hideFromAPapdocumentation';
+                    return $tag->getName() === 'hideFromApiDocumentation';
                 })
                 ->isEmpty();
         }
