@@ -49,7 +49,7 @@ return [
             // 'api/index','api/store/{id}'
         ],
 
-        'overview_information_view' => 'api-doc/overview',
+        // 'overview_information_view' => 'api-doc/overview',
 
         
         // 'response_code' => [
