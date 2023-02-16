@@ -49,19 +49,21 @@ return [
             // 'api/index','api/store/{id}'
         ],
 
+        'overview_information_view' => 'api-doc/overview',
+
         
-        'response_code' => [
-            "200" => "OKE",
-            "401" => "Unauthorized",
-            "400" => "Bad Request",
-            "403" => "Forbidden",
-        ],
-        'response_error' => [
-            "invalid_token" => "token tidak sesuai : return logout",
-            "expired_token" => "token expired : return logout atau renew token",
-            "unauthorized" => "token tidak ditemukan : return logout",
-            "forbidden" => "tidak memiliki akses url",
-        ],
+        // 'response_code' => [
+        //     "200" => "OKE",
+        //     "401" => "Unauthorized",
+        //     "400" => "Bad Request",
+        //     "403" => "Forbidden",
+        // ],
+        // 'response_error' => [
+        //     "invalid_token" => "token tidak sesuai : return logout",
+        //     "expired_token" => "token expired : return logout atau renew token",
+        //     "unauthorized" => "token tidak ditemukan : return logout",
+        //     "forbidden" => "tidak memiliki akses url",
+        // ],
 
     ],
 

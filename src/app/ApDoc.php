@@ -353,10 +353,10 @@ class ApDoc{
         $description = "";
         $descriptionCode = null;
         $descriptionError = null;
-        foreach(config('apdoc.api.response_code') as $code => $value){
+        foreach(config('apdoc.api.response_code',[]) as $code => $value){
             $descriptionCode .= "<tr><td>{$code}</td><td>: {$value}</td></tr>";
         }
-        foreach(config('apdoc.api.response_error') as $type => $desc){
+        foreach(config('apdoc.api.response_error',[]) as $type => $desc){
             $descriptionError .= "<tr><td>{$type}</td><td>: {$desc}</td></tr>";
         }
         if($descriptionCode || $descriptionError){
@@ -368,6 +368,8 @@ class ApDoc{
                 $description .= "<table><tr><th><p><b>API Response Code</b></p></th>{$descriptionError}</tr>";
             }
         }
+        $overview_information_view = config('apdoc.api.overview_information_view');
+        $description .= $overview_information_view ? file_get_contents(resource_path("views/{$overview_information_view}")) : '';
 
         $collection = [
 
