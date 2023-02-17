@@ -149,6 +149,8 @@ class ApDoc{
                             'in' => 'formData',
                             'name' => $name,
                             'description' => $schema['description'],
+                            'properties' => @$schema['properties'],
+                            'properties_required' => @$schema['properties_required'],
                             'required' => $schema['required'],
                             'type' => $type,
                             'default' => $default,
@@ -178,6 +180,8 @@ class ApDoc{
                                                 $parameter['name'] => [
                                                     'type' => ($parameter['type']=='file')?'string':$parameter['type'],
                                                     'description' => $parameter['description'],
+                                                    'properties' => @$parameter['properties']?? [],
+                                                    'required' => @$parameter['properties_required']?? [],
                                                 ]
                                             ];
                                             if($parameter['default']){
@@ -192,18 +196,18 @@ class ApDoc{
                                 : []
                             )
 
-                             + (
-                                count($properties = $bodyParameters
-                                        ->values()
-                                        ->filter()
-                                        ->mapWithKeys(
-                                            function ($parameter) {
-                                                return [$parameter['name'] => $parameter['default']];
-                                            }
-                                        ))
-                                ? ['example' => $properties]
-                                : []
-                            )
+                            //  + (
+                            //     count($properties = $bodyParameters
+                            //             ->values()
+                            //             ->filter()
+                            //             ->mapWithKeys(
+                            //                 function ($parameter) {
+                            //                     return [$parameter['name'] => $parameter['default']];
+                            //                 }
+                            //             ))
+                            //     ? ['example' => $properties]
+                            //     : []
+                            // )
                         ],
                     ];
 

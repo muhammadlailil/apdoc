@@ -50,6 +50,9 @@
         .sl-overflow-y-auto{
             max-height: unset !important
         }
+        .sl-elements .TextRequestBody{
+            max-height: unset !important
+        }
     </style>
 </body>
 

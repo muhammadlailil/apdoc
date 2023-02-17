@@ -1,4 +1,5 @@
 <?php
+
 namespace Laililmahfud\ApDoc;
 
 
@@ -78,7 +79,7 @@ class ApDocGenerator
             'sorting' => intval($routeSorting),
             'showresponse' => !empty($content),
             'requestBody' => $requestBody,
-            'headers' => array_merge($headerParametes,$defaultParametes['headers'])
+            'headers' => array_merge($headerParametes, $defaultParametes['headers'])
         ];
 
         return $parsedRoute;
@@ -114,7 +115,7 @@ class ApDocGenerator
 
                 $type = $this->normalizeParameterType($type);
                 list($description, $example) = $this->parseDescription($description, $type);
-                $value = $example;//is_null($example) ? $this->generateDummyValue($type) : $example;
+                $value = $example; //is_null($example) ? $this->generateDummyValue($type) : $example;
 
                 return [$name => compact('type', 'description', 'required', 'value')];
             })->toArray();
@@ -127,13 +128,13 @@ class ApDocGenerator
      *
      * @return array
      */
-    protected function getBodyParametersFromDocBlock(array $tags)
+    protected function getBodyParametersFromDocBlock(array $tags, $name = null)
     {
         $parameters = collect($tags)
             ->filter(function ($tag) {
                 return $tag instanceof Tag && $tag->getName() === 'bodyParam';
             })
-            ->mapWithKeys(function ($tag) {
+            ->mapWithKeys(function ($tag) use ($tags, $name) {
                 preg_match('/(.+?)\s+(.+?)\s+(required\s+)?(.*)/', $tag->getContent(), $content);
                 if (empty($content)) {
                     // this means only name and type were supplied
@@ -152,14 +153,29 @@ class ApDocGenerator
 
                 $type = $this->normalizeParameterType($type);
                 list($description, $example) = $this->parseDescription($description, $type);
-                $value = $example;//is_null($example) ? $this->generateDummyValue($type) : $example;
-
-                return [$name => compact('type', 'description', 'required', 'value')];
+                $value = $example; //is_null($example) ? $this->generateDummyValue($type) : $example;
+                $properties = null;
+                return [$name => compact('type', 'description', 'required', 'value', 'properties')];
             })->toArray();
-
+        $parameters = collect($parameters)->map(function ($row, $name) use ($parameters) {
+            $properties = collect($parameters)->filter(function ($row, $names) use ($name) {
+                return str_contains($names, "{$name}.");
+            })->toArray();
+            $props = [];
+            $required = [];
+            foreach($properties as $key=> $pp){
+                $keyName = str_replace("{$name}.","",$key);
+                $props[$keyName] = $pp;
+                if($pp['required']) array_push($required,$keyName);
+            }
+            $row['properties'] = $props;
+            $row['properties_required'] = $required;
+            return $row;
+        })->filter(function($key,$name){
+            return !str_contains($name,".");
+        })->toArray();
         return $parameters;
     }
-
 
     /**
      * @param array $tags
@@ -195,7 +211,7 @@ class ApDocGenerator
     }
 
 
-     /**
+    /**
      * @param array $tags
      *
      * @return array
@@ -207,8 +223,8 @@ class ApDocGenerator
             ->first(function ($tag) {
                 return $tag instanceof Tag && strtolower($tag->getName()) === 'defaultparam';
             });
-        if($isHas){
-            foreach(config('apdoc.default_parameter.headers',[]) as $name => $atr){
+        if ($isHas) {
+            foreach (config('apdoc.default_parameter.headers', []) as $name => $atr) {
                 $headers[$name] = [
                     'type' => @$atr[0],
                     'required' => @$atr[1],
@@ -303,7 +319,7 @@ class ApDocGenerator
     }
 
 
-     /**
+    /**
      * @param ReflectionClass $controller
      * @param ReflectionMethod $method
      *
@@ -365,7 +381,7 @@ class ApDocGenerator
 
                 $type = $this->normalizeParameterType($type);
                 list($description, $example) = $this->parseDescription($description, $type);
-                $value = $example;//is_null($example) ? $this->generateDummyValue($type) : $example;
+                $value = $example; //is_null($example) ? $this->generateDummyValue($type) : $example;
 
                 return [$name => compact('type', 'description', 'required', 'value')];
             })->toArray();
