@@ -301,7 +301,8 @@ class ApDoc{
                                 "tags" => [
                                     $groupName,
                                 ],
-                                'operationId' => $route['title'],
+                                'summary' => $route['title'],
+                                'operationId' => str()->slug($route['title']),
                                 'description' => $route['description'],
                              ]) +
 
