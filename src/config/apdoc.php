@@ -18,6 +18,15 @@ return [
         'web',
     ],
 
+    'elements' => [
+        'css' => [
+            'https://cdn.jsdelivr.net/npm/@stoplight/elements@9.0.0/styles.min.css'
+        ],
+        'js' => [
+            'https://unpkg.com/@stoplight/elements/web-components.min.js'
+        ]
+    ],
+
     /*
      * output json file, location folder storage
      */

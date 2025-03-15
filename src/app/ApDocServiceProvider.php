@@ -20,9 +20,9 @@ class ApDocServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'apdoc');
 
     }
-    
 
-  
+
+
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/apdoc.php', 'apdoc');
@@ -30,17 +30,20 @@ class ApDocServiceProvider extends ServiceProvider
     }
 
 
-    protected function publisher(){
+    protected function publisher()
+    {
         $this->publishes([
-            __DIR__.'/../config/apdoc.php' => config_path('apdoc.php'),
-        ],'apdoc-config');
+            __DIR__ . '/../config/apdoc.php' => config_path('apdoc.php'),
+        ], 'apdoc-config');
     }
 
     protected function registerRoutes()
     {
-        Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../resources/routes/apdoc.php', 'apdoc');
-        });
+        if (config('apdoc.enable_documentation')) {
+            Route::group($this->routeConfiguration(), function () {
+                $this->loadRoutesFrom(__DIR__ . '/../resources/routes/apdoc.php', 'apdoc');
+            });
+        }
     }
     protected function routeConfiguration()
     {

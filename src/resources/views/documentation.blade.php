@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ config('app.name') }} - API Documentation</title>
 
-    <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
+    @foreach ($js as $jsScript)
+        <script src="{{ $jsScript }}"></script>
+    @endforeach
+    @foreach($css as $cssScript)
+        <link rel="stylesheet" href="{{$cssScript}}">
+    @endforeach
 </head>
 
 <body style="height: 100vh; overflow-y: hidden">
@@ -24,33 +28,42 @@
         div[data-testid="two-column-right"] {
             max-width: unset !important
         }
-        .auto-scrol{
+
+        .auto-scrol {
             overflow: auto;
         }
-        .HttpOperation__Description p{
+
+        .HttpOperation__Description p {
             font-size: 15px
         }
-        .table-response-detail{
+
+        .table-response-detail {
             display: flex;
         }
-        .table-response-detail table{
+
+        .table-response-detail table {
             margin: 0px !important;
         }
-        .table-response-detail table:first-child{
+
+        .table-response-detail table:first-child {
             margin-right: 15px !important;
         }
-        .table-response-detail table tr th{
+
+        .table-response-detail table tr th {
             padding: 10px 15px;
             font-size: 17px
         }
-        div[data-testid="two-column-right"]{
+
+        div[data-testid="two-column-right"] {
             width: 45% !important;
             margin-left: 25px !important;
         }
-        .sl-overflow-y-auto{
+
+        .sl-overflow-y-auto {
             max-height: unset !important
         }
-        .sl-elements .TextRequestBody{
+
+        .sl-elements .TextRequestBody {
             max-height: unset !important
         }
     </style>
