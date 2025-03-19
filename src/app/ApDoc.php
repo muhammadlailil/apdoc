@@ -127,7 +127,7 @@ class ApDoc{
     {
         $result = $routes->map(function ($routeGroup, $groupName) use ($routes) {
 
-            return collect($routeGroup)->map(function ($route) use ($groupName, $routes, $routeGroup) {
+            return $routeGroup->sortBy('sorting')->sortBy('title')->map(function ($route) use ($groupName, $routes, $routeGroup) {
 
                 $methodGroup = $routeGroup->where('uri', $route['uri'])->mapWithKeys(function ($route) use ($groupName, $routes) {
 
@@ -263,9 +263,7 @@ class ApDoc{
                         }
                         return $headerParam;
                     });
-                    if(count($headerParameters)){
-                        // dd($headerParameters);
-                    }
+               
 
                     $response = [];
                     if(count($route['response'] ?? [])){
@@ -302,7 +300,7 @@ class ApDoc{
                                     $groupName,
                                 ],
                                 'summary' => $route['title'],
-                                'operationId' => str()->slug($route['title']),
+                                'operationId' => str()->slug($route['title']).'-'.str()->ulid(),
                                 'description' => $route['description'],
                              ]) +
 
@@ -344,7 +342,7 @@ class ApDoc{
                 return collect([
                     ('/' . $route['uri']) => $methodGroup,
                 ]);
-            });
+            })->values();
         });
 
         $paths = [];
