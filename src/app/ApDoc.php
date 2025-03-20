@@ -11,22 +11,22 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 
 
-class ApDoc{
-    
+class ApDoc
+{
+
     public function __construct(
         private $routeMatcher = new RouteMatcher
-    )
-    {
+    ) {
     }
 
-    public function generate(){
+    public function generate()
+    {
         $routes = $this->routeMatcher->getRoutesToBeDocumented();
         $generator = new ApDocGenerator();
 
         $parsedRoutes = $this->processRoutes($generator, $routes);
         $sortedRoute = [];
-        foreach ($parsedRoutes as $key => $val)
-        {
+        foreach ($parsedRoutes as $key => $val) {
             $sortedRoute[$key] = $val['sorting'];
         }
         array_multisort($sortedRoute, SORT_ASC, $parsedRoutes);
@@ -42,7 +42,7 @@ class ApDoc{
      */
     private function writeMarkdown($parsedRoutes)
     {
-        $outputPath = storage_path(config('apdoc.output','api-docs'));
+        $outputPath = storage_path(config('apdoc.output', 'api-docs'));
 
         if (!File::isDirectory($outputPath)) {
             File::makeDirectory($outputPath, 0777, true, true);
@@ -127,7 +127,10 @@ class ApDoc{
     {
         $result = $routes->map(function ($routeGroup, $groupName) use ($routes) {
 
-            return $routeGroup->sortBy('sorting')->sortBy('title')->map(function ($route) use ($groupName, $routes, $routeGroup) {
+            return $routeGroup->sortBy([
+                ['sorting', 'asc'],
+                ['title', 'desc'],
+            ])->map(function ($route) use ($groupName, $routes, $routeGroup) {
 
                 $methodGroup = $routeGroup->where('uri', $route['uri'])->mapWithKeys(function ($route) use ($groupName, $routes) {
 
@@ -162,39 +165,39 @@ class ApDoc{
                             'schema' => [
                                 'type' => 'object',
                             ]
-                             + (
-                                count($required = $bodyParameters
+                                + (
+                                    count($required = $bodyParameters
                                         ->values()
                                         ->where('required', true)
                                         ->pluck('name'))
-                                ? ['required' => $required]
-                                : []
-                            )
+                                    ? ['required' => $required]
+                                    : []
+                                )
 
-                             + (
-                                count($properties = $bodyParameters
+                                + (
+                                    count($properties = $bodyParameters
                                         ->values()
                                         ->filter()
                                         ->mapWithKeys(function ($parameter) use ($routes) {
                                             $param = [
                                                 $parameter['name'] => [
-                                                    'type' => ($parameter['type']=='file')?'string':$parameter['type'],
+                                                    'type' => ($parameter['type'] == 'file') ? 'string' : $parameter['type'],
                                                     'description' => $parameter['description'],
-                                                    'properties' => @$parameter['properties']?? [],
-                                                    'required' => @$parameter['properties_required']?? [],
+                                                    'properties' => @$parameter['properties'] ?? [],
+                                                    'required' => @$parameter['properties_required'] ?? [],
                                                 ]
                                             ];
-                                            if($parameter['default']){
+                                            if ($parameter['default']) {
                                                 $param[$parameter['name']]['example'] = $parameter['default'];
                                             }
-                                            if($parameter['type']=='file'){
+                                            if ($parameter['type'] == 'file') {
                                                 $param[$parameter['name']]['format'] = "binary";
                                             }
                                             return $param;
                                         }))
-                                ? ['properties' => $properties]
-                                : []
-                            )
+                                    ? ['properties' => $properties]
+                                    : []
+                                )
 
                             //  + (
                             //     count($properties = $bodyParameters
@@ -221,7 +224,7 @@ class ApDoc{
                                 'type' => $schema['type'],
                             ],
                         ];
-                        if($schema['value']){
+                        if ($schema['value']) {
                             $queryReturn['schema']['example'] = $schema['value'];
                         }
                         return $queryReturn;
@@ -237,7 +240,7 @@ class ApDoc{
                                 'type' => $schema['type'],
                             ],
                         ];
-                        if($schema['value']){
+                        if ($schema['value']) {
                             $pathParam['schema']['example'] = $schema['value'];
                         }
                         return $pathParam;
@@ -258,16 +261,16 @@ class ApDoc{
                                 'type' => $schema['type'],
                             ],
                         ];
-                        if($schema['default']){
+                        if ($schema['default']) {
                             $headerParam['schema']['default'] = $schema['default'];
                         }
                         return $headerParam;
                     });
-               
+
 
                     $response = [];
-                    if(count($route['response'] ?? [])){
-                        foreach($route['response'] as $resp){
+                    if (count($route['response'] ?? [])) {
+                        foreach ($route['response'] as $resp) {
                             $response[$resp['status']] = [
                                 'description' => (string) $resp['status'],
                                 'content' => [
@@ -281,36 +284,40 @@ class ApDoc{
                             ];
                         }
                     }
-                 
+
                     return [
                         strtolower($route['methods'][0]) => (
 
                             (
                                 $route['authenticated']
-                                ? ['security' => [
-                                   collect(config('apdoc.security'))->map(function () {
-                                    return [];
-                                }),
-                                ]]
+                                ? [
+                                    'security' => [
+                                        collect(config('apdoc.security'))->map(function () {
+                                            return [];
+                                        }),
+                                    ]
+                                ]
                                 : []
                             )
 
-                             + ([
+                            + ([
                                 "tags" => [
                                     $groupName,
                                 ],
                                 'summary' => $route['title'],
-                                'operationId' => str()->slug(str_replace('/','-',$route['uri'])),
+                                'operationId' => str()->slug(str_replace('/', '-', $route['uri'])),
                                 'description' => $route['description'],
-                             ]) +
+                            ]) +
 
                             (
                                 count(array_intersect(['POST', 'PUT', 'PATCH'], $route['methods']))
-                                ? ['requestBody' => [
-                                    'description' => "",
-                                    'required' => true,
-                                    'content' => collect($jsonParameters)->filter()->toArray(),
-                                ]]
+                                ? [
+                                    'requestBody' => [
+                                        'description' => "",
+                                        'required' => true,
+                                        'content' => collect($jsonParameters)->filter()->toArray(),
+                                    ]
+                                ]
                                 : []
                             ) +
 
@@ -325,11 +332,11 @@ class ApDoc{
                                             collect($pathParameters->values()->toArray())
                                                 ->filter()
                                                 ->toArray()
-                                        ) ,
+                                        ),
                                         collect($headerParameters->values()->toArray())
-                                        ->filter()
-                                        ->values()
-                                        ->toArray()
+                                            ->filter()
+                                            ->values()
+                                            ->toArray()
                                     )
                                 ),
 
@@ -356,18 +363,18 @@ class ApDoc{
         $description = "";
         $descriptionCode = null;
         $descriptionError = null;
-        foreach(config('apdoc.api.response_code',[]) as $code => $value){
+        foreach (config('apdoc.api.response_code', []) as $code => $value) {
             $descriptionCode .= "<tr><td>{$code}</td><td>: {$value}</td></tr>";
         }
-        foreach(config('apdoc.api.response_error',[]) as $type => $desc){
+        foreach (config('apdoc.api.response_error', []) as $type => $desc) {
             $descriptionError .= "<tr><td>{$type}</td><td>: {$desc}</td></tr>";
         }
-        if($descriptionCode || $descriptionError){
+        if ($descriptionCode || $descriptionError) {
             $description .= '<br><div class="table-response-detail">';
-            if($descriptionCode){
+            if ($descriptionCode) {
                 $description .= "<table><tr><th><p><b>API Response Code</b></p></th>{$descriptionCode}</tr>";
             }
-            if($descriptionError){
+            if ($descriptionError) {
                 $description .= "<table><tr><th><p><b>API Response Code</b></p></th>{$descriptionError}</tr>";
             }
         }
@@ -381,10 +388,10 @@ class ApDoc{
             'info' => [
                 'title' => config('apdoc.info.title'),
                 'version' => config('apdoc.info.version'),
-                'description' => config('apdoc.info.description').$description,
+                'description' => config('apdoc.info.description') . $description,
                 'termsOfService' => config('apdoc.terms_of_service'),
-                "license" =>  !empty(config('apdoc.license')) ? config('apdoc.license') : null,
-                "contact" =>  config('apdoc.contact'), 
+                "license" => !empty(config('apdoc.license')) ? config('apdoc.license') : null,
+                "contact" => config('apdoc.contact'),
             ],
 
             'components' => [
@@ -421,19 +428,20 @@ class ApDoc{
                             ];
                         });
 
-                        return ["PM{$route['paymentMethod']->id}" => ['type' => 'object']
+                        return [
+                            "PM{$route['paymentMethod']->id}" => ['type' => 'object']
 
-                             + (
-                                count($required = $bodyParameters
+                                + (
+                                    count($required = $bodyParameters
                                         ->values()
                                         ->where('required', true)
                                         ->pluck('name'))
-                                ? ['required' => $required]
-                                : []
-                            )
+                                    ? ['required' => $required]
+                                    : []
+                                )
 
-                             + (
-                                count($properties = $bodyParameters
+                                + (
+                                    count($properties = $bodyParameters
                                         ->values()
                                         ->filter()
                                         ->mapWithKeys(function ($parameter) {
@@ -445,20 +453,20 @@ class ApDoc{
                                                 ],
                                             ];
                                         }))
-                                ? ['properties' => $properties]
-                                : []
-                            )
+                                    ? ['properties' => $properties]
+                                    : []
+                                )
 
-                             + (
-                                count($properties = $bodyParameters
+                                + (
+                                    count($properties = $bodyParameters
                                         ->values()
                                         ->filter()
                                         ->mapWithKeys(function ($parameter) {
                                             return [$parameter['name'] => $parameter['default']];
                                         }))
-                                ? ['example' => $properties]
-                                : []
-                            )
+                                    ? ['example' => $properties]
+                                    : []
+                                )
                         ];
                     });
                 })->filter(),
