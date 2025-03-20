@@ -300,7 +300,7 @@ class ApDoc{
                                     $groupName,
                                 ],
                                 'summary' => $route['title'],
-                                'operationId' => str()->slug($route['title']).'-'.str()->ulid(),
+                                'operationId' => str()->slug(str_replace('/','-',$route['uri'])),
                                 'description' => $route['description'],
                              ]) +
 
