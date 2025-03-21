@@ -305,7 +305,7 @@ class ApDoc
                                     $groupName,
                                 ],
                                 'summary' => $route['title'],
-                                'operationId' => str()->slug(str_replace('/', '-', $route['uri'])),
+                                'operationId' => strtolower($route['methods'][0]).'-'.str()->slug(str_replace('/', '-', $route['uri'])),
                                 'description' => $route['description'],
                             ]) +
 
